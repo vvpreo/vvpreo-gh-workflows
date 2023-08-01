@@ -1,5 +1,21 @@
 name: Prepare docker image
 description: "Builds and pushed docker image to ghcr"
+inputs:
+  REGISTRY_HOST:
+    description: "Registry Host"
+    default: "dhcr.io"
+  GITHUB_TOKEN:
+    description: "Needed to authenticate in for operations with project/registry"
+    required: true
+  STAND_NAME:
+    description: "Name of the stand"
+    required: true
+  TELEGRAM_BOT_TOKEN:
+    description: "Token for notification via telegram"
+    required: true
+  CHAT_ID:
+    description: "Chat ID in Telegram to send notification"
+    required: true
 
 runs:
   using: 'composite'
