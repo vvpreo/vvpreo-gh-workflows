@@ -24,7 +24,7 @@ runs:
       shell: bash
       run: |
         project_name=$(echo "${GITHUB_REPOSITORY}" | sed 's/\//-/g')
-        docker-compose -p ${project_name} -f ${PWD}/docker-compose-test.yml up -d --force-recreate --remove-orphans
+        docker-compose -p ${project_name} -f ${PWD}/docker-compose-${{inputs.STAND_NAME}}.yml up -d --force-recreate --remove-orphans
 
     - name: Notify
       shell: bash
