@@ -21,7 +21,6 @@ runs:
   using: 'composite'
   steps:
     - name: Checkout repo to $GITHUB_WORKSPACE
-      shell: bash
       uses: actions/checkout@v3
 
     - name: Show ENVs
