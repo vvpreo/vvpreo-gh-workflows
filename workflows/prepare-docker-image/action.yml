@@ -9,15 +9,15 @@ runs:
 
     - name: Login to Docker Hub
       shell: bash
-      run: docker login -u some ${{REGISTRY_HOST}} -p "${{inputs.GITHUB_TOKEN}}"
+      run: docker login -u some ${{inputs.REGISTRY_HOST}} -p "${{inputs.GITHUB_TOKEN}}"
 
     - name: Build
       shell: bash
-      run: docker build -t ${{REGISTRY_HOST}}/${GITHUB_REPOSITORY}:${GITHUB_SHA} .
+      run: docker build -t ${{inputs.REGISTRY_HOST}}/${GITHUB_REPOSITORY}:${GITHUB_SHA} .
 
     - name: Save
       shell: bash
-      run: docker push ${{REGISTRY_HOST}}/${GITHUB_REPOSITORY}:${GITHUB_SHA}
+      run: docker push ${{inputs.REGISTRY_HOST}}/${GITHUB_REPOSITORY}:${GITHUB_SHA}
 
     - name: Notify
       shell: bash
