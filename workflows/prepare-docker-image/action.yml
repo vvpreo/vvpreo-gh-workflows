@@ -2,7 +2,7 @@ name: Prepare docker image
 description: "Builds and pushed docker image to ghcr"
 
 runs:
-  using: 'composite'
+  using: ubuntu-22.04
   steps:
     - name: Checkout repo to $GITHUB_WORKSPACE
       uses: actions/checkout@v3
