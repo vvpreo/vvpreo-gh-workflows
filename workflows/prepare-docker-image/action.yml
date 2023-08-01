@@ -9,11 +9,11 @@ runs:
 
     - name: Login to Docker Hub
       shell: bash
-      run: docker login -u some ghcr.io -p "${{GITHUB_TOKEN}}"
+      run: docker login -u some ghcr.io -p "${{inputs.GITHUB_TOKEN}}"
 
     - name: Build
       shell: bash
-      run: docker build -t ghcr.io/${{GITHUB_REPOSITORY}}:${GITHUB_SHA} .
+      run: docker build -t ghcr.io/${{inputs.GITHUB_REPOSITORY}}:${GITHUB_SHA} .
 
     - name: Save
       shell: bash
@@ -28,8 +28,8 @@ runs:
         MSG="${MSG}with \`${GITHUB_REF_TYPE}\` \`${GITHUB_REF_NAME}\`\n"
         MSG="${MSG}and commit \`${GITHUB_SHA}\`\n"
         
-        curl -X POST "https://api.telegram.org/bot${{TELEGRAM_BOT_TOKEN}}/sendMessage" \
+        curl -X POST "https://api.telegram.org/bot${{inputs.TELEGRAM_BOT_TOKEN}}/sendMessage" \
           -H 'Content-Type: application/json' \
-          -d "{\"chat_id\": \"${{CHAT_ID}}\", \"text\": \"${MSG}\", \"disable_notification\":false, \"parse_mode\":\"MarkdownV2\"}"
+          -d "{\"chat_id\": \"${{inputs.CHAT_ID}}\", \"text\": \"${MSG}\", \"disable_notification\":false, \"parse_mode\":\"MarkdownV2\"}"
 
 
