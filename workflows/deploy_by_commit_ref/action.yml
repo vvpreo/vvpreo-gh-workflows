@@ -1,0 +1,42 @@
+name: Prepare docker image
+description: "Builds and pushed docker image to ghcr"
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout repo to $GITHUB_WORKSPACE
+      shell: bash
+      uses: actions/checkout@v3
+
+    - name: Show ENVs
+      shell: bash
+      run: env
+
+    - name: Login to Docker Hub
+      shell: bash
+      run: docker login -u some ${{inputs.REGISTRY_HOST}} -p "${{inputs.GITHUB_TOKEN}}"
+
+    - name: Pull Image
+      shell: bash
+      run: docker pull ${{inputs.REGISTRY_HOST}}/${GITHUB_REPOSITORY}:${GITHUB_SHA}
+
+    - name: Start container(s)
+      shell: bash
+      run: |
+        project_name=$(echo "${GITHUB_REPOSITORY}" | sed 's/\//-/g')
+        docker-compose -p ${project_name} -f ${PWD}/docker-compose-test.yml up -d --force-recreate --remove-orphans
+
+    - name: Notify
+      shell: bash
+      run: |
+        MSG="${MSG}*Deployed on ${{inputs.STAND_NAME}} STAND*\n"
+        MSG="${MSG}At \`${GITHUB_REPOSITORY}\`\n"
+        MSG="${MSG}by \`${GITHUB_TRIGGERING_ACTOR}\`\n"
+        MSG="${MSG}with \`${GITHUB_REF_TYPE}\` \`${GITHUB_REF_NAME}\`\n"
+        MSG="${MSG}and commit \`${GITHUB_SHA}\`\n"
+        
+        curl -X POST "https://api.telegram.org/bot${{inputs.TELEGRAM_BOT_TOKEN}}/sendMessage" \
+          -H 'Content-Type: application/json' \
+          -d "{\"chat_id\": \"${{inputs.CHAT_ID}}\", \"text\": \"${MSG}\", \"disable_notification\":false, \"parse_mode\":\"MarkdownV2\"}"
+
+
