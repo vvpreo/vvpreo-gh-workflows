@@ -19,7 +19,9 @@ runs:
       run: |
         if [ "x" = "x${{inputs.ADD_DATE_POSTFIX}}"  ];
         then 
-          export POSTFIX=$(date +"%Y-%m-%dT%H:%M:%S")
+          POSTFIX=""
+        else
+          POSTFIX=__$(date +"%Y-%m-%dT%H:%M:%S")
         fi
         
         curl -L \
@@ -28,7 +30,7 @@ runs:
         -H "Authorization: Bearer ${{inputs.GITHUB_TOKEN}}" \
         -H "X-GitHub-Api-Version: 2022-11-28" \
         https://api.github.com/repos/${GITHUB_REPOSITORY}/git/refs \
-        -d "{\"ref\":\"refs/tags/${{inputs.TAG_BODY}}__${POSTFIX}\",\"sha\":\"${GITHUB_SHA}\"}"
+        -d "{\"ref\":\"refs/tags/${{inputs.TAG_BODY}}${POSTFIX}\",\"sha\":\"${GITHUB_SHA}\"}"
 
 
 
