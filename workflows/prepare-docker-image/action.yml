@@ -13,7 +13,7 @@ runs:
 
     - name: Build
       shell: bash
-      run: docker build -t ghcr.io/${{inputs.GITHUB_REPOSITORY}}:${GITHUB_SHA} .
+      run: docker build -t ghcr.io/${GITHUB_REPOSITORY}:${GITHUB_SHA} .
 
     - name: Save
       shell: bash
