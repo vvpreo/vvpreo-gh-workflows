@@ -2,24 +2,29 @@ name: Prepare docker image
 description: "Builds and pushed docker image to ghcr"
 
 runs:
-  using: ubuntu-22.04
+  using: 'composite'
   steps:
     - name: Checkout repo to $GITHUB_WORKSPACE
       uses: actions/checkout@v3
 
     - name: Show ENVs
+      shell: bash
       run: env
 
     - name: Login to Docker Hub
+      shell: bash
       run: echo "${GITHUB_TOKEN}" | docker login ghcr.io -u does_not_need_it  --password-stdin
 
     - name: Build
+      shell: bash
       run: docker build -t ghcr.io/${GITHUB_REPOSITORY}:${GITHUB_SHA} .
 
     - name: Save
+      shell: bash
       run: docker push ghcr.io/${GITHUB_REPOSITORY}:${GITHUB_SHA}
 
     - name: Notify
+      shell: bash
       run: |
         MSG="${MSG}*Docker Image Prepared*\n"
         MSG="${MSG}At \`${GITHUB_REPOSITORY}\`\n"
