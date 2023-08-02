@@ -21,7 +21,7 @@ runs:
         then 
           POSTFIX=""
         else
-          POSTFIX=__$(date +"%Y-%m-%d__%H.%M.%S.%z")
+          POSTFIX=__$(date +"%Y-%m-%d__%H.%M.%S%z")
         fi
         
         curl -L \
