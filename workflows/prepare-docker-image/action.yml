@@ -20,7 +20,7 @@ runs:
     - name: Checkout repo to $GITHUB_WORKSPACE
       uses: actions/checkout@v3
 
-    - name: Export .env
+    - name: Export gh-workflow.env
       uses: vvpreo/gh-workflows/workflows/export-dot-env
 
     - name: Login to Docker Hub

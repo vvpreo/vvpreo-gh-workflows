@@ -1,5 +1,5 @@
-name: Export '.env'
-description: "Exports to ENV all from .env file in current directory"
+name: Export 'gh-workflow.env'
+description: "Exports to ENV all from gh-workflow.env file in current directory"
 
 runs:
   using: 'composite'
@@ -7,8 +7,8 @@ runs:
     - name: Export dot env
       shell: bash
       run: |
-        if [ -f .env ]; then
-            export $(grep -v '^#' .env | xargs)
+        if [ -f gh-workflow.env ]; then
+            export $(grep -v '^#' gh-workflow.env | xargs)
         else
-            echo "No '.env' file. Nothing to export
+            echo "No 'gh-workflow.env' file. Nothing to export
         fi
