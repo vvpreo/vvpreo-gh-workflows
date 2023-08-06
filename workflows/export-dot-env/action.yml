@@ -1,0 +1,14 @@
+name: Export '.env'
+description: "Exports to ENV all from .env file in current directory"
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Export dot env
+      shell: bash
+      run: |
+        if [ -f .env ]; then
+            export $(grep -v '^#' .env | xargs)
+        else
+            echo "No '.env' file. Nothing to export
+        fi
