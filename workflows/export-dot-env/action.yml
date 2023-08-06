@@ -10,5 +10,5 @@ runs:
         if [ -f gh-workflow.env ]; then
             export $(grep -v '^#' gh-workflow.env | xargs)
         else
-            echo "No 'gh-workflow.env' file. Nothing to export
+            echo "No 'gh-workflow.env' file. Nothing to export"
         fi
