@@ -21,7 +21,7 @@ runs:
       uses: actions/checkout@v3
 
     - name: Export .env
-      uses: workflows/export-dot-env
+      uses: vvpreo/gh-workflows/workflows/export-dot-env
 
     - name: Login to Docker Hub
       shell: bash

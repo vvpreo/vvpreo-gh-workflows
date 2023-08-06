@@ -23,6 +23,9 @@ runs:
     - name: Checkout repo to $GITHUB_WORKSPACE
       uses: actions/checkout@v3
 
+    - name: Export .env
+      uses: vvpreo/gh-workflows/workflows/export-dot-env
+
     - name: Show ENVs
       shell: bash
       run: env
