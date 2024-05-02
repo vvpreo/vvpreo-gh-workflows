@@ -1,0 +1,30 @@
+name: Notify to Telegram
+description: "Builds and pushed docker image to ghcr"
+inputs:
+  TELEGRAM_BOT_TOKEN:
+    description: "Token for notification via telegram"
+    required: true
+  CHAT_ID:
+    description: "Chat ID in Telegram to send notification"
+    required: true
+  TG_MSG_MARKDOWN_V2:
+    description: "Telegram message"
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Notify
+      shell: bash
+      run: |
+        MSG="${MSG}${{inputs.TG_MSG_MARKDOWN_V2}}\n"
+        MSG="${MSG}At \`${GITHUB_REPOSITORY}\`\n"
+        MSG="${MSG}by \`${GITHUB_TRIGGERING_ACTOR}\`\n"
+        MSG="${MSG}with \`${GITHUB_REF_TYPE}\` \`${GITHUB_REF_NAME}\`\n"
+        MSG="${MSG}and commit \`${GITHUB_SHA}\`\n"
+        
+        curl -X POST "https://api.telegram.org/bot${{inputs.TELEGRAM_BOT_TOKEN}}/sendMessage" \
+          -H 'Content-Type: application/json' \
+          -d "{\"chat_id\": \"${{inputs.CHAT_ID}}\", \"text\": \"${MSG}\", \"disable_notification\":false, \"parse_mode\":\"MarkdownV2\"}"
+
+
