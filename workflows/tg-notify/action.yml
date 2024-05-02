@@ -19,7 +19,7 @@ runs:
   steps:
     - name: Notify
       shell: bash
-      run: '
+      run: |
         MSG="${MSG}${{inputs.TG_MSG_MARKDOWN_V2}}\n"
         MSG="${MSG}At \`${GITHUB_REPOSITORY}\`\n"
         MSG="${MSG}by \`${GITHUB_TRIGGERING_ACTOR}\`\n"
@@ -35,11 +35,18 @@ runs:
           "parse_mode":"MarkdownV2"
         }
         EOT
+        b="$b{"
+        b="$b\"chat_id\": \"${{inputs.CHAT_ID}}\","
+        b="$b\"message_thread_id\":\"${{inputs.TOPIC_ID}}\","
+        b="$b\"text\": \"${MSG}\","
+        b="$b\"disable_notification\":false,"
+        b="$b\"parse_mode\":\"MarkdownV2\""
+        b="$b}"
 
-        echo "body: $body"
+        echo "body: $b"
 
         curl -X POST "https://api.telegram.org/bot${{inputs.TELEGRAM_BOT_TOKEN}}/sendMessage" \
-          -H "Content-Type: application/json" -d "$body"'
+          -H "Content-Type: application/json" -d "$b"
 
 
 
