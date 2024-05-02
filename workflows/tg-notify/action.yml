@@ -26,15 +26,17 @@ runs:
         MSG="${MSG}with \`${GITHUB_REF_TYPE}\` \`${GITHUB_REF_NAME}\`\n"
         MSG="${MSG}and commit \`${GITHUB_SHA}\`\n"
                
-        if [ -z "${{inputs.TOPIC_ID}}" ]; then 
-          read -d '' body << EOT
-          {"chat_id": "${{inputs.CHAT_ID}}", "text": "${MSG}", "disable_notification":false, "parse_mode":"MarkdownV2"}
+        read -d '' body << EOT
+        {
+          "chat_id": "${{inputs.CHAT_ID}}", 
+          "message_thread_id":"${{inputs.TOPIC_ID}}", 
+          "text": "${MSG}", 
+          "disable_notification":false, 
+          "parse_mode":"MarkdownV2"
+        }
         EOT
-        else
-          read -d '' body << EOT
-          {"chat_id": "${{inputs.CHAT_ID}}", "message_thread_id":"${{inputs.TOPIC_ID}}", "text": "${MSG}", "disable_notification":false, "parse_mode":"MarkdownV2"}
-        EOT
-        fi
+        
+        echo "body: $body"
 
         curl -X POST "https://api.telegram.org/bot${{inputs.TELEGRAM_BOT_TOKEN}}/sendMessage" \
           -H 'Content-Type: application/json' -d "$body"
