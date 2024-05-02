@@ -7,6 +7,9 @@ inputs:
   CHAT_ID:
     description: "Chat ID in Telegram to send notification"
     required: true
+  TOPIC_ID:
+    description: "Topic ID in Telegram chat to send notification"
+    required: false
   TG_MSG_MARKDOWN_V2:
     description: "Telegram message"
     required: true
