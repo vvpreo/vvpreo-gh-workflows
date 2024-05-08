@@ -10,6 +10,12 @@ inputs:
   STAND_NAME:
     description: "Name of the stand"
     required: true
+  FORCE_RECREATE:
+    description: "Force recreate containers. Set '' to NOT recreate"
+    default: '--force-recreate'
+  CLEANUP_AFTER_START:
+    description: "Runs 'docker system prune --all --force'. Set '' To omit this step"
+    default: 'docker system prune --all --force'
 
 runs:
   using: 'composite'
@@ -33,5 +39,5 @@ runs:
       shell: bash
       run: |
         project_name=$(echo "${GITHUB_REPOSITORY}" | sed 's/\//-/g')
-        docker compose -p ${project_name} -f ${PWD}/docker-compose-${{inputs.STAND_NAME}}.yml up -d --always-recreate-deps --remove-orphans
-
+        docker compose -p ${project_name} -f ${PWD}/docker-compose-${{inputs.STAND_NAME}}.yml up -d ${{inputs.FORCE_RECREATE}} --remove-orphans
+        ${{inputs.CLEANUP_AFTER_START}}
