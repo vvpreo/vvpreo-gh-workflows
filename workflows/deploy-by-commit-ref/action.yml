@@ -39,5 +39,5 @@ runs:
       shell: bash
       run: |
         project_name=$(echo "${GITHUB_REPOSITORY}" | sed 's/\//-/g')
-        docker compose -p ${project_name} -f ${PWD}/docker-compose-${{inputs.STAND_NAME}}.yml up -d ${{inputs.FORCE_RECREATE}} --remove-orphans
+        docker compose -p ${project_name} -f ${PWD}/docker-compose-${{inputs.STAND_NAME}}.yml up -d ${{inputs.FORCE_RECREATE}} --build --remove-orphans
         ${{inputs.CLEANUP_AFTER_START}}
