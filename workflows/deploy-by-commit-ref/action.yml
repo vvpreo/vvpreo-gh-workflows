@@ -1,4 +1,4 @@
-name: Prepare docker image
+name: Deploy at the same host
 description: "Builds and pushed docker image to ghcr"
 inputs:
   REGISTRY_HOST:
@@ -9,12 +9,6 @@ inputs:
     required: true
   STAND_NAME:
     description: "Name of the stand"
-    required: true
-  TELEGRAM_BOT_TOKEN:
-    description: "Token for notification via telegram"
-    required: true
-  CHAT_ID:
-    description: "Chat ID in Telegram to send notification"
     required: true
 
 runs:
@@ -39,19 +33,5 @@ runs:
       shell: bash
       run: |
         project_name=$(echo "${GITHUB_REPOSITORY}" | sed 's/\//-/g')
-        docker compose -p ${project_name} -f ${PWD}/docker-compose-${{inputs.STAND_NAME}}.yml up -d --force-recreate --remove-orphans
-
-    - name: Notify
-      shell: bash
-      run: |
-        MSG="${MSG}*Deployed on ${{inputs.STAND_NAME}} STAND*\n"
-        MSG="${MSG}At \`${GITHUB_REPOSITORY}\`\n"
-        MSG="${MSG}by \`${GITHUB_TRIGGERING_ACTOR}\`\n"
-        MSG="${MSG}with \`${GITHUB_REF_TYPE}\` \`${GITHUB_REF_NAME}\`\n"
-        MSG="${MSG}and commit \`${GITHUB_SHA}\`\n"
-        
-        curl -X POST "https://api.telegram.org/bot${{inputs.TELEGRAM_BOT_TOKEN}}/sendMessage" \
-          -H 'Content-Type: application/json' \
-          -d "{\"chat_id\": \"${{inputs.CHAT_ID}}\", \"text\": \"${MSG}\", \"disable_notification\":false, \"parse_mode\":\"MarkdownV2\"}"
-
+        docker compose -p ${project_name} -f ${PWD}/docker-compose-${{inputs.STAND_NAME}}.yml up -d --always-recreate-deps --remove-orphans
 
