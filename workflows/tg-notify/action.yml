@@ -20,7 +20,7 @@ runs:
     - name: Notify
       shell: bash
       run: |
-        MSG="${MSG}${{inputs.TG_MSG_MARKDOWN_V2}}\n"
+        MSG="$(echo '${{inputs.TG_MSG_MARKDOWN_V2}}' | sed 's/\./\\\\./g')"
         MSG="${MSG}At \`${GITHUB_REPOSITORY}\`\n"
         MSG="${MSG}by \`${GITHUB_TRIGGERING_ACTOR}\`\n"
         MSG="${MSG}with \`${GITHUB_REF_TYPE}\` \`${GITHUB_REF_NAME}\`\n"
