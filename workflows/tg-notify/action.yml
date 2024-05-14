@@ -21,11 +21,17 @@ runs:
       shell: bash
       run: |
         MSG="$(echo '${{inputs.TG_MSG_MARKDOWN_V2}}' | sed 's/\./\\\\./g; s/-/\\\\-/g')"
+        MSG="${MSG}\n"
         MSG="${MSG}At \`${GITHUB_REPOSITORY}\`\n"
         MSG="${MSG}by \`${GITHUB_TRIGGERING_ACTOR}\`\n"
         MSG="${MSG}with \`${GITHUB_REF_TYPE}\` \`${GITHUB_REF_NAME}\`\n"
         MSG="${MSG}and commit \`${GITHUB_SHA}\`\n"
-               
+        
+        wf_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        wf_url="$(echo $wf_url | sed 's/\./\\\\./g; s/-/\\\\-/g')"
+        MSG="${MSG}Run ID: [${{ github.run_id }}](${wf_url})\n"
+
+
         b="$b{"
         b="$b\"chat_id\": \"${{inputs.CHAT_ID}}\","
         b="$b\"message_thread_id\":\"${{inputs.TOPIC_ID}}\","
