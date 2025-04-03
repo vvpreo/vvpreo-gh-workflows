@@ -16,7 +16,9 @@ runs:
 
     - name: Login to Docker Hub
       shell: bash
-      run: docker login -u some ${{inputs.REGISTRY_HOST}} -p "${{inputs.GITHUB_TOKEN}}"
+      run: > 
+        echo "${{inputs.GITHUB_TOKEN}}" | 
+        docker login -u some ${{inputs.REGISTRY_HOST}} --password-stdin
 
     - name: Build
       shell: bash
