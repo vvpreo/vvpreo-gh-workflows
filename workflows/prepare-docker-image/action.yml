@@ -22,13 +22,15 @@ runs:
 
     - name: Build
       shell: bash
-      run: docker build -t ${{inputs.REGISTRY_HOST}}/${GITHUB_REPOSITORY}:${GITHUB_SHA} .
+      run: >
+        docker build 
+          -t ${{inputs.REGISTRY_HOST}}/${GITHUB_REPOSITORY}:${GITHUB_SHA} 
+          -t ${{inputs.REGISTRY_HOST}}/${GITHUB_REPOSITORY}:${GITHUB_REF_NAME} .
 
     - name: Push commit hash tag
       shell: bash
       run: docker push ${{inputs.REGISTRY_HOST}}/${GITHUB_REPOSITORY}:${GITHUB_SHA}
 
-    - name: Tag with branch name
+    - name: Push branch tag to registry
       shell: bash
-      run: docker tag ${{inputs.REGISTRY_HOST}}/${GITHUB_REPOSITORY}:${GITHUB_SHA} ${{inputs.REGISTRY_HOST}}/${GITHUB_REPOSITORY}:${GITHUB_REF_NAME}
-
+      run: docker push ${{inputs.REGISTRY_HOST}}/${GITHUB_REPOSITORY}:${GITHUB_REF_NAME}
