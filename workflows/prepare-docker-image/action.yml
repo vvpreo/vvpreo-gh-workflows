@@ -24,8 +24,11 @@ runs:
       shell: bash
       run: docker build -t ${{inputs.REGISTRY_HOST}}/${GITHUB_REPOSITORY}:${GITHUB_SHA} .
 
-    - name: Save
+    - name: Push commit hash tag
       shell: bash
       run: docker push ${{inputs.REGISTRY_HOST}}/${GITHUB_REPOSITORY}:${GITHUB_SHA}
 
+    - name: Tag with branch name
+      shell: bash
+      run: docker tag ${{inputs.REGISTRY_HOST}}/${GITHUB_REPOSITORY}:${GITHUB_SHA} ${{inputs.REGISTRY_HOST}}/${GITHUB_REPOSITORY}:${GITHUB_REF_NAME}
 
